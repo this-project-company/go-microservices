@@ -78,11 +78,13 @@ func (s *CustomerServer) DeleteCustomer(ctx context.Context, req *pb.DeleteCusto
 		if err != nil && cached == "" {
 			return &pb.MessageOnlyResponse{
 				Message:  "No user",
-				}, err	
+				}, nil	
 		}
 		
 	if err := cache.Delete(key); err != nil {
-		return nil, err
+		return &pb.MessageOnlyResponse{
+            Message:  "Customer Delete From Redis cache",
+        }, nil
 	}
 		
 		return &pb.MessageOnlyResponse{
