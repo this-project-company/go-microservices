@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package customer;
+
+option go_package = "customer-service/proto;proto";
+
+service CustomerService {
+  rpc EditCustomer(EditCustomerRequest) returns (CustomerResponse);
+  rpc GetCustomer(GetCustomerRequest) returns (CustomerResponse);
+  rpc DeleteCustomer(DeleteCustomerRequest) returns (MessageOnlyResponse);
+}
+
+message Customer {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message EditCustomerRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message GetCustomerRequest {
+  string id = 1;
+}
+
+message DeleteCustomerRequest {
+  string id = 1;
+}
+
+message CustomerResponse {
+  Customer customer = 1;
+  string message = 3;
+}
+
+message MessageOnlyResponse {
+  string message = 1;
+}
+
