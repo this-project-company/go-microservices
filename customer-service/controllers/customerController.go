@@ -16,13 +16,6 @@ type CustomerServer struct {
 	pb.UnimplementedCustomerServiceServer
 }
 
-func defaultIfEmpty(val, def string) string {
-    if val == "" {
-        return def
-    }
-    return val
-}
-
 
 // Example: GetCustomer (with Redis caching)
 func (s *CustomerServer) GetCustomer(ctx context.Context, req *pb.GetCustomerRequest) (*pb.CustomerResponse, error) {
