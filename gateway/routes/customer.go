@@ -1,14 +1,18 @@
 package routes
 
 import (
-    "context"
-    "log"
-    "time"
+	"context"
+	"fmt"
+	"log"
+	"os"
+	"time"
 
-    "github.com/gin-gonic/gin"
-    pb "go-microservices/customer-service/proto"
+	pb "go-microservices/customer-service/proto"
 
-    "google.golang.org/grpc"
+	"github.com/gin-gonic/gin"
+
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func CustomerRoutes(rg *gin.RouterGroup) {
@@ -20,13 +24,22 @@ func CustomerRoutes(rg *gin.RouterGroup) {
     }
 }
 
-func editCustomer(c *gin.Context) {
-    conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+func newCustomerClient() pb.CustomerServiceClient {
+    customerPort := os.Getenv("CUSTOMER_PORT")
+    address := fmt.Sprintf("localhost%s", customerPort)
+
+    conn, err := grpc.NewClient(address, grpc.WithTransportCredentials(insecure.NewCredentials()))
     if err != nil {
         log.Fatalf("could not connect: %v", err)
     }
-    defer conn.Close()
-    client := pb.NewCustomerServiceClient(conn)
+    // ⚠️ Don’t close conn here! Return client & keep conn open
+    return pb.NewCustomerServiceClient(conn)
+}
+
+
+func editCustomer(c *gin.Context) {
+
+    client := newCustomerClient()
 
     id := c.Param("id")
     var body struct {
@@ -53,12 +66,8 @@ func editCustomer(c *gin.Context) {
 }
 
 func getCustomer(c *gin.Context) {
-    conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
-    if err != nil {
-        log.Fatalf("could not connect: %v", err)
-    }
-    defer conn.Close()
-    client := pb.NewCustomerServiceClient(conn)
+
+    client := newCustomerClient()
 
     id := c.Param("id")
 
@@ -75,12 +84,8 @@ func getCustomer(c *gin.Context) {
 }
 
 func deleteCustomer(c *gin.Context) {
-    conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
-    if err != nil {
-        log.Fatalf("could not connect: %v", err)
-    }
-    defer conn.Close()
-    client := pb.NewCustomerServiceClient(conn)
+
+    client := newCustomerClient()
     
     id := c.Param("id")
 

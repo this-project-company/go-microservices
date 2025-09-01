@@ -3,13 +3,21 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"go-microservices/gateway/routes"
+	initializers "go-microservices/pkg/initializer"
 
 	"github.com/gin-gonic/gin"
 )
 
+func init() {
+    initializers.LoadEnvvariables()
+}
+
 func main() {
+    initializers.LoadEnvvariables()
+
     r := gin.Default()
 
     api := r.Group("/api/v1")
@@ -17,8 +25,9 @@ func main() {
         routes.CustomerRoutes(api) // attach customer routes
     }
 
-    log.Println("🚀 API Gateway running on :8080")
-    if err := r.Run(":8080"); err != nil && err != http.ErrServerClosed {
+    port := os.Getenv("GATEWAY_PORT")
+    log.Printf("🚀 API Gateway running on  %s", port)
+    if err := r.Run(port); err != nil && err != http.ErrServerClosed {
         log.Fatalf("server error: %v", err)
     }
 }

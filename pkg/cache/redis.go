@@ -18,12 +18,12 @@ var (
 // InitRedis initializes the Redis client
 func InitRedis() {
 	db, _ := strconv.Atoi(getEnv("REDIS_DB", "0"))
-	// addr := fmt.Sprintf("%s", os.Getenv("REDIS_ADDR"))
+	addr :=  os.Getenv("REDIS_ADDR")
+	pass := os.Getenv("REDIS_PASSWORD")
 	
-
 	Rdb = redis.NewClient(&redis.Options{
-		Addr:     getEnv("REDIS_ADDR", "192.168.29.200:6379"),
-		Password: getEnv("REDIS_PASSWORD", ""),
+		Addr:     getEnv("REDIS_ADDR", addr),
+		Password: getEnv("REDIS_PASSWORD", pass),
 		DB:       db,
 	})
 

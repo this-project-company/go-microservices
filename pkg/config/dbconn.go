@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -16,7 +17,7 @@ func DBconnection() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	dsn := "postgres://deltrexgg:undefineddb@192.168.29.200:5432/deltrexdb?sslmode=disable"
+	dsn := os.Getenv("DB_URL")
 
 	config, err := pgxpool.ParseConfig(dsn)
 	if err != nil {

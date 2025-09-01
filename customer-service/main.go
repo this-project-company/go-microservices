@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"go-microservices/customer-service/controllers"
 	pb "go-microservices/customer-service/proto"
 	"go-microservices/pkg/cache"
 	"go-microservices/pkg/config"
+	initializers "go-microservices/pkg/initializer"
 
-	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -33,17 +34,14 @@ func recoveryInterceptor(
 	return handler(ctx, req)
 }
 
-func LoadEnvvariables() {
-    err := godotenv.Load()
-    if err != nil {
-        log.Println("⚠️ No .env file found, relying on system environment variables")
-    }
+
+func init() {
+	initializers.LoadEnvvariables()
 }
 
 
 func main() {
 	// Start gRPC server with recovery interceptor
-	LoadEnvvariables()
     cache.InitRedis()
 
 	config.DBconnection()
@@ -53,14 +51,16 @@ func main() {
 		grpc.UnaryInterceptor(recoveryInterceptor),
 	)
 
+	port := os.Getenv("CUSTOMER_PORT")
+
 	pb.RegisterCustomerServiceServer(server, &controllers.CustomerServer{})
 
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	fmt.Println("🚀 Customer service running on :50051")
+	fmt.Printf("🚀 Customer service running on %s\n", port)
 	if err := server.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

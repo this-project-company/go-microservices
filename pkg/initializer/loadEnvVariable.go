@@ -2,13 +2,19 @@ package initializers
 
 import (
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
 
 func LoadEnvvariables() {
-    err := godotenv.Load()
+    // go one level up from customer-service/
+    root, _ := os.Getwd()
+    envPath := filepath.Join(root, "..", ".env")
+
+    err := godotenv.Load(envPath)
     if err != nil {
-        log.Println("⚠️ No .env file found, relying on system environment variables")
+        log.Fatalf("Error loading .env file from %s", envPath)
     }
 }
