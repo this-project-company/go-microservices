@@ -1,16 +1,18 @@
 package testing
 
 import (
-    "context"
-    "testing"
+	"context"
+	"testing"
 
-    "go-microservices/customer-service/proto"
-    "go-microservices/customer-service/controllers"
-    "go-microservices/pkg/cache"
-    "go-microservices/pkg/config"
+	"go-microservices/customer-service/controllers"
+	"go-microservices/customer-service/proto"
+	"go-microservices/pkg/cache"
+	"go-microservices/pkg/config"
+	initializers "go-microservices/pkg/initializer"
 )
 
 func init() {
+    initializers.TestLoadEnvvariables()
 	cache.InitRedis()
     config.DBconnection()
 }
