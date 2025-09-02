@@ -12,6 +12,7 @@ import (
 	"go-microservices/pkg/cache"
 	"go-microservices/pkg/config"
 	initializers "go-microservices/pkg/initializer"
+	"go-microservices/pkg/rabbitmq"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -46,6 +47,11 @@ func main() {
 
 	config.DBconnection()
 	defer config.CloseDB()
+
+	rabbitmq.SetupRabbitMQ()
+	defer rabbitmq.RabbitConn.Close()
+    defer rabbitmq.RabbitCh.Close() 
+
 
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(recoveryInterceptor),

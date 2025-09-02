@@ -21,6 +21,7 @@ func CustomerRoutes(rg *gin.RouterGroup) {
         customer.PUT("/edit/:id", editCustomer)
         customer.GET("/:id", getCustomer)
         customer.DELETE("/:id", deleteCustomer)
+        customer.POST("/create", createCustomer)
     }
 }
 
@@ -99,5 +100,36 @@ func deleteCustomer(c *gin.Context) {
     }
 
     c.JSON(200, res)
+}
+
+func createCustomer(c *gin.Context) {
+    client := newCustomerClient()
+
+    var body struct {
+        Id int64 `json:"id"`
+        Name string `json:"name"`
+        Email string `json:"email"`
+    }
+    if err := c.ShouldBindJSON(&body); err != nil {
+        c.JSON(400, gin.H{"error": "invalid input"})
+        return
+    }
+    
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+    defer cancel()
+
+    res, err := client.CreateCustomer(ctx, &pb.CreateCustomerRequest{
+        Id:   body.Id,
+        Name: body.Name,
+        Email: body.Email,
+    })
+
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(200, res)
+
 }
 

@@ -8,10 +8,17 @@ service CustomerService {
   rpc EditCustomer(EditCustomerRequest) returns (CustomerResponse);
   rpc GetCustomer(GetCustomerRequest) returns (CustomerResponse);
   rpc DeleteCustomer(DeleteCustomerRequest) returns (MessageOnlyResponse);
+  rpc CreateCustomer(CreateCustomerRequest) returns (MessageOnlyResponse);
 }
 
 message Customer {
   string id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message CreateCustomerRequest {
+  int64 id = 1;
   string name = 2;
   string email = 3;
 }
