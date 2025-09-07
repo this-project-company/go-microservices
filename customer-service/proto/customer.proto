@@ -9,6 +9,7 @@ service CustomerService {
   rpc GetCustomer(GetCustomerRequest) returns (CustomerResponse);
   rpc DeleteCustomer(DeleteCustomerRequest) returns (MessageOnlyResponse);
   rpc CreateCustomer(CreateCustomerRequest) returns (MessageOnlyResponse);
+  rpc SendFile(UploadCSVRequest) returns (UploadCSVResponse);
 }
 
 message Customer {
@@ -43,5 +44,16 @@ message CustomerResponse {
 
 message MessageOnlyResponse {
   string message = 1;
+}
+
+
+message UploadCSVRequest {
+  bytes file_content = 1; // The entire CSV file
+  string filename = 2;    // Optional metadata
+}
+
+message UploadCSVResponse {
+  int32 rows_processed = 1;
+  string message = 2;
 }
 

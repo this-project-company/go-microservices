@@ -1,10 +1,13 @@
 package controllers
 
 import (
+	"bufio"
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	pb "go-microservices/customer-service/proto"
@@ -19,6 +22,63 @@ import (
 type CustomerServer struct {
 	pb.UnimplementedCustomerServiceServer
 }
+
+// Exmaple : File sending like csv to bulk upload in DB (map the field corresponding to the DB cols)
+func (s *CustomerServer) SendFile(ctx context.Context, req *pb.UploadCSVRequest) (*pb.UploadCSVResponse, error) {
+    // Use a scanner to read the CSV line by line
+    scanner := bufio.NewScanner(bytes.NewReader(req.FileContent))
+
+    // store header as headers[]
+    if !scanner.Scan() {
+        return &pb.UploadCSVResponse{
+            RowsProcessed: 0,
+            Message:       "Empty CSV file",
+        }, nil
+    }
+    headerLine := scanner.Text()
+    headers := strings.Split(headerLine, ",")
+    for i := range headers {
+        headers[i] = strings.TrimSpace(headers[i]) // delete the header title
+    }
+
+    rowsProcessed := 0
+    rowsSkipped := 0
+
+    // Read remaining lines from the beginning 
+    for scanner.Scan() {
+        line := scanner.Text()
+
+        // Skip completely empty lines
+        if strings.TrimSpace(line) == "" {
+            continue
+        }
+
+        fields := strings.Split(line, ",")
+        rowData := make(map[string]string)
+        for i, h := range headers {
+            if i < len(fields) {
+                rowData[h] = fields[i]
+            } else {
+                rowData[h] = "" // empty if missing
+            }
+        }
+
+        rowsProcessed++
+        fmt.Printf("Row %d: %+v\n", rowsProcessed, rowData) // debug log
+    }
+
+    if err := scanner.Err(); err != nil {
+        fmt.Println("Error reading CSV:", err)
+        rowsSkipped++ 
+    }
+
+    return &pb.UploadCSVResponse{
+        RowsProcessed: int32(rowsProcessed),
+        Message:       fmt.Sprintf("CSV processed successfully (skipped %d bad rows)", rowsSkipped),
+    }, nil
+}
+
+
 
 
 // Example: GetCustomer (with Redis caching)

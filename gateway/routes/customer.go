@@ -3,6 +3,7 @@ package routes
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"time"
@@ -22,6 +23,7 @@ func CustomerRoutes(rg *gin.RouterGroup) {
         customer.GET("/:id", getCustomer)
         customer.DELETE("/:id", deleteCustomer)
         customer.POST("/create", createCustomer)
+        customer.POST("/sendfile", sendFiles)
     }
 }
 
@@ -35,6 +37,46 @@ func newCustomerClient() pb.CustomerServiceClient {
     }
     // ⚠️ Don’t close conn here! Return client & keep conn open
     return pb.NewCustomerServiceClient(conn)
+}
+
+
+func sendFiles(c *gin.Context) {
+
+    client := newCustomerClient()
+
+    file, err := c.FormFile("file")
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+
+    f, err := file.Open()
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+    defer f.Close()
+
+    fileBytes, err := io.ReadAll(f)
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+    defer cancel()
+
+    res, err := client.SendFile(ctx, &pb.UploadCSVRequest{
+        FileContent: fileBytes,
+        Filename:    file.Filename,
+    })
+    
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(200, res)
 }
 
 
