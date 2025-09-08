@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	pb "go-microservices/customer-service/proto"
@@ -24,6 +25,7 @@ func CustomerRoutes(rg *gin.RouterGroup) {
         customer.DELETE("/:id", deleteCustomer)
         customer.POST("/create", createCustomer)
         customer.POST("/sendfile", sendFiles)
+        customer.PUT("/emailchange/:id", updateEmail)
     }
 }
 
@@ -173,5 +175,45 @@ func createCustomer(c *gin.Context) {
 
     c.JSON(200, res)
 
+}
+
+func updateEmail(c *gin.Context) {
+    client := newCustomerClient()
+
+    idParam := c.Param("id")
+
+    // convert string -> int
+    idInt, err := strconv.Atoi(idParam)
+    if err != nil {
+        c.JSON(400, gin.H{"error": "invalid id"})
+        return
+    }
+
+    // cast to int32
+    id := int32(idInt)
+
+    var body struct {
+        Email string `json:"email"`
+    }
+
+    if err := c.ShouldBindJSON(&body); err != nil {
+        c.JSON(400, gin.H{"error": "invalid input"})
+        return
+    }
+
+    ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+    defer cancel()
+
+    res, err := client.ChangeCustomerEmail(ctx, &pb.UpdateCustomerRequest{
+        Id:   id,
+        Email: body.Email,
+    })
+
+    if err != nil {
+        c.JSON(500, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(200, res)
 }
 

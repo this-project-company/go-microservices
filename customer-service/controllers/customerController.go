@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"go-microservices/customer-service/models"
 	pb "go-microservices/customer-service/proto"
 	"go-microservices/pkg/cache"
 	"go-microservices/pkg/config"
@@ -189,4 +190,23 @@ func (s * CustomerServer) CreateCustomer(ctx context.Context, req *pb.CreateCust
     }, nil
 }
 
-//gorm migration
+func (s *CustomerServer) ChangeCustomerEmail(ctx context.Context, req *pb.UpdateCustomerRequest) (*pb.MessageOnlyResponse, error) {
+    result := config.DB.Model(&models.Customer{}).
+        Where("id = ?", req.Id).
+        Update("email", req.Email)
+
+    if result.Error != nil {
+        return nil, result.Error
+    }
+
+    if result.RowsAffected == 0 {
+        return &pb.MessageOnlyResponse{
+            Message: "No customer found with given ID",
+        }, nil
+    }
+
+    return &pb.MessageOnlyResponse{
+        Message: "Customer Email Updated Successfully",
+    }, nil
+}
+

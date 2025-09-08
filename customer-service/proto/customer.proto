@@ -10,6 +10,7 @@ service CustomerService {
   rpc DeleteCustomer(DeleteCustomerRequest) returns (MessageOnlyResponse);
   rpc CreateCustomer(CreateCustomerRequest) returns (MessageOnlyResponse);
   rpc SendFile(UploadCSVRequest) returns (UploadCSVResponse);
+  rpc ChangeCustomerEmail(UpdateCustomerRequest) returns (MessageOnlyResponse);
 }
 
 message Customer {
@@ -35,6 +36,11 @@ message GetCustomerRequest {
 
 message DeleteCustomerRequest {
   string id = 1;
+}
+
+message UpdateCustomerRequest {
+  int32 id = 1;
+  string email = 2;
 }
 
 message CustomerResponse {

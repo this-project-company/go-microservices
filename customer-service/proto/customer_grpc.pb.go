@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	CustomerService_EditCustomer_FullMethodName   = "/customer.CustomerService/EditCustomer"
-	CustomerService_GetCustomer_FullMethodName    = "/customer.CustomerService/GetCustomer"
-	CustomerService_DeleteCustomer_FullMethodName = "/customer.CustomerService/DeleteCustomer"
-	CustomerService_CreateCustomer_FullMethodName = "/customer.CustomerService/CreateCustomer"
-	CustomerService_SendFile_FullMethodName       = "/customer.CustomerService/SendFile"
+	CustomerService_EditCustomer_FullMethodName        = "/customer.CustomerService/EditCustomer"
+	CustomerService_GetCustomer_FullMethodName         = "/customer.CustomerService/GetCustomer"
+	CustomerService_DeleteCustomer_FullMethodName      = "/customer.CustomerService/DeleteCustomer"
+	CustomerService_CreateCustomer_FullMethodName      = "/customer.CustomerService/CreateCustomer"
+	CustomerService_SendFile_FullMethodName            = "/customer.CustomerService/SendFile"
+	CustomerService_ChangeCustomerEmail_FullMethodName = "/customer.CustomerService/ChangeCustomerEmail"
 )
 
 // CustomerServiceClient is the client API for CustomerService service.
@@ -35,6 +36,7 @@ type CustomerServiceClient interface {
 	DeleteCustomer(ctx context.Context, in *DeleteCustomerRequest, opts ...grpc.CallOption) (*MessageOnlyResponse, error)
 	CreateCustomer(ctx context.Context, in *CreateCustomerRequest, opts ...grpc.CallOption) (*MessageOnlyResponse, error)
 	SendFile(ctx context.Context, in *UploadCSVRequest, opts ...grpc.CallOption) (*UploadCSVResponse, error)
+	ChangeCustomerEmail(ctx context.Context, in *UpdateCustomerRequest, opts ...grpc.CallOption) (*MessageOnlyResponse, error)
 }
 
 type customerServiceClient struct {
@@ -95,6 +97,16 @@ func (c *customerServiceClient) SendFile(ctx context.Context, in *UploadCSVReque
 	return out, nil
 }
 
+func (c *customerServiceClient) ChangeCustomerEmail(ctx context.Context, in *UpdateCustomerRequest, opts ...grpc.CallOption) (*MessageOnlyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(MessageOnlyResponse)
+	err := c.cc.Invoke(ctx, CustomerService_ChangeCustomerEmail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CustomerServiceServer is the server API for CustomerService service.
 // All implementations must embed UnimplementedCustomerServiceServer
 // for forward compatibility.
@@ -104,6 +116,7 @@ type CustomerServiceServer interface {
 	DeleteCustomer(context.Context, *DeleteCustomerRequest) (*MessageOnlyResponse, error)
 	CreateCustomer(context.Context, *CreateCustomerRequest) (*MessageOnlyResponse, error)
 	SendFile(context.Context, *UploadCSVRequest) (*UploadCSVResponse, error)
+	ChangeCustomerEmail(context.Context, *UpdateCustomerRequest) (*MessageOnlyResponse, error)
 	mustEmbedUnimplementedCustomerServiceServer()
 }
 
@@ -128,6 +141,9 @@ func (UnimplementedCustomerServiceServer) CreateCustomer(context.Context, *Creat
 }
 func (UnimplementedCustomerServiceServer) SendFile(context.Context, *UploadCSVRequest) (*UploadCSVResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendFile not implemented")
+}
+func (UnimplementedCustomerServiceServer) ChangeCustomerEmail(context.Context, *UpdateCustomerRequest) (*MessageOnlyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ChangeCustomerEmail not implemented")
 }
 func (UnimplementedCustomerServiceServer) mustEmbedUnimplementedCustomerServiceServer() {}
 func (UnimplementedCustomerServiceServer) testEmbeddedByValue()                         {}
@@ -240,6 +256,24 @@ func _CustomerService_SendFile_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CustomerService_ChangeCustomerEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateCustomerRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CustomerServiceServer).ChangeCustomerEmail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CustomerService_ChangeCustomerEmail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CustomerServiceServer).ChangeCustomerEmail(ctx, req.(*UpdateCustomerRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CustomerService_ServiceDesc is the grpc.ServiceDesc for CustomerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var CustomerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendFile",
 			Handler:    _CustomerService_SendFile_Handler,
+		},
+		{
+			MethodName: "ChangeCustomerEmail",
+			Handler:    _CustomerService_ChangeCustomerEmail_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

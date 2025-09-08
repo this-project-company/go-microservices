@@ -52,6 +52,9 @@ func main() {
 	defer rabbitmq.RabbitConn.Close()
     defer rabbitmq.RabbitCh.Close() 
 
+	config.GormDB()
+	defer config.CloseGorm()
+
 
 	server := grpc.NewServer(
 		grpc.UnaryInterceptor(recoveryInterceptor),

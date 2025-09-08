@@ -281,6 +281,58 @@ func (x *DeleteCustomerRequest) GetId() string {
 	return ""
 }
 
+type UpdateCustomerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateCustomerRequest) Reset() {
+	*x = UpdateCustomerRequest{}
+	mi := &file_customer_service_proto_customer_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCustomerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCustomerRequest) ProtoMessage() {}
+
+func (x *UpdateCustomerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_customer_service_proto_customer_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCustomerRequest.ProtoReflect.Descriptor instead.
+func (*UpdateCustomerRequest) Descriptor() ([]byte, []int) {
+	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UpdateCustomerRequest) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UpdateCustomerRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
 type CustomerResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Customer      *Customer              `protobuf:"bytes,1,opt,name=customer,proto3" json:"customer,omitempty"`
@@ -291,7 +343,7 @@ type CustomerResponse struct {
 
 func (x *CustomerResponse) Reset() {
 	*x = CustomerResponse{}
-	mi := &file_customer_service_proto_customer_proto_msgTypes[5]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -303,7 +355,7 @@ func (x *CustomerResponse) String() string {
 func (*CustomerResponse) ProtoMessage() {}
 
 func (x *CustomerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_customer_service_proto_customer_proto_msgTypes[5]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -316,7 +368,7 @@ func (x *CustomerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CustomerResponse.ProtoReflect.Descriptor instead.
 func (*CustomerResponse) Descriptor() ([]byte, []int) {
-	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{5}
+	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CustomerResponse) GetCustomer() *Customer {
@@ -342,7 +394,7 @@ type MessageOnlyResponse struct {
 
 func (x *MessageOnlyResponse) Reset() {
 	*x = MessageOnlyResponse{}
-	mi := &file_customer_service_proto_customer_proto_msgTypes[6]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -354,7 +406,7 @@ func (x *MessageOnlyResponse) String() string {
 func (*MessageOnlyResponse) ProtoMessage() {}
 
 func (x *MessageOnlyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_customer_service_proto_customer_proto_msgTypes[6]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -367,7 +419,7 @@ func (x *MessageOnlyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MessageOnlyResponse.ProtoReflect.Descriptor instead.
 func (*MessageOnlyResponse) Descriptor() ([]byte, []int) {
-	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{6}
+	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *MessageOnlyResponse) GetMessage() string {
@@ -387,7 +439,7 @@ type UploadCSVRequest struct {
 
 func (x *UploadCSVRequest) Reset() {
 	*x = UploadCSVRequest{}
-	mi := &file_customer_service_proto_customer_proto_msgTypes[7]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -399,7 +451,7 @@ func (x *UploadCSVRequest) String() string {
 func (*UploadCSVRequest) ProtoMessage() {}
 
 func (x *UploadCSVRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_customer_service_proto_customer_proto_msgTypes[7]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -412,7 +464,7 @@ func (x *UploadCSVRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadCSVRequest.ProtoReflect.Descriptor instead.
 func (*UploadCSVRequest) Descriptor() ([]byte, []int) {
-	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{7}
+	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UploadCSVRequest) GetFileContent() []byte {
@@ -439,7 +491,7 @@ type UploadCSVResponse struct {
 
 func (x *UploadCSVResponse) Reset() {
 	*x = UploadCSVResponse{}
-	mi := &file_customer_service_proto_customer_proto_msgTypes[8]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -451,7 +503,7 @@ func (x *UploadCSVResponse) String() string {
 func (*UploadCSVResponse) ProtoMessage() {}
 
 func (x *UploadCSVResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_customer_service_proto_customer_proto_msgTypes[8]
+	mi := &file_customer_service_proto_customer_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -464,7 +516,7 @@ func (x *UploadCSVResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadCSVResponse.ProtoReflect.Descriptor instead.
 func (*UploadCSVResponse) Descriptor() ([]byte, []int) {
-	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{8}
+	return file_customer_service_proto_customer_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UploadCSVResponse) GetRowsProcessed() int32 {
@@ -500,7 +552,10 @@ const file_customer_service_proto_customer_proto_rawDesc = "" +
 	"\x12GetCustomerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"'\n" +
 	"\x15DeleteCustomerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\\\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"=\n" +
+	"\x15UpdateCustomerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\"\\\n" +
 	"\x10CustomerResponse\x12.\n" +
 	"\bcustomer\x18\x01 \x01(\v2\x12.customer.CustomerR\bcustomer\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\"/\n" +
@@ -511,13 +566,14 @@ const file_customer_service_proto_customer_proto_rawDesc = "" +
 	"\bfilename\x18\x02 \x01(\tR\bfilename\"T\n" +
 	"\x11UploadCSVResponse\x12%\n" +
 	"\x0erows_processed\x18\x01 \x01(\x05R\rrowsProcessed\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage2\x8e\x03\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage2\xe5\x03\n" +
 	"\x0fCustomerService\x12I\n" +
 	"\fEditCustomer\x12\x1d.customer.EditCustomerRequest\x1a\x1a.customer.CustomerResponse\x12G\n" +
 	"\vGetCustomer\x12\x1c.customer.GetCustomerRequest\x1a\x1a.customer.CustomerResponse\x12P\n" +
 	"\x0eDeleteCustomer\x12\x1f.customer.DeleteCustomerRequest\x1a\x1d.customer.MessageOnlyResponse\x12P\n" +
 	"\x0eCreateCustomer\x12\x1f.customer.CreateCustomerRequest\x1a\x1d.customer.MessageOnlyResponse\x12C\n" +
-	"\bSendFile\x12\x1a.customer.UploadCSVRequest\x1a\x1b.customer.UploadCSVResponseB\x1eZ\x1ccustomer-service/proto;protob\x06proto3"
+	"\bSendFile\x12\x1a.customer.UploadCSVRequest\x1a\x1b.customer.UploadCSVResponse\x12U\n" +
+	"\x13ChangeCustomerEmail\x12\x1f.customer.UpdateCustomerRequest\x1a\x1d.customer.MessageOnlyResponseB\x1eZ\x1ccustomer-service/proto;protob\x06proto3"
 
 var (
 	file_customer_service_proto_customer_proto_rawDescOnce sync.Once
@@ -531,17 +587,18 @@ func file_customer_service_proto_customer_proto_rawDescGZIP() []byte {
 	return file_customer_service_proto_customer_proto_rawDescData
 }
 
-var file_customer_service_proto_customer_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_customer_service_proto_customer_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_customer_service_proto_customer_proto_goTypes = []any{
 	(*Customer)(nil),              // 0: customer.Customer
 	(*CreateCustomerRequest)(nil), // 1: customer.CreateCustomerRequest
 	(*EditCustomerRequest)(nil),   // 2: customer.EditCustomerRequest
 	(*GetCustomerRequest)(nil),    // 3: customer.GetCustomerRequest
 	(*DeleteCustomerRequest)(nil), // 4: customer.DeleteCustomerRequest
-	(*CustomerResponse)(nil),      // 5: customer.CustomerResponse
-	(*MessageOnlyResponse)(nil),   // 6: customer.MessageOnlyResponse
-	(*UploadCSVRequest)(nil),      // 7: customer.UploadCSVRequest
-	(*UploadCSVResponse)(nil),     // 8: customer.UploadCSVResponse
+	(*UpdateCustomerRequest)(nil), // 5: customer.UpdateCustomerRequest
+	(*CustomerResponse)(nil),      // 6: customer.CustomerResponse
+	(*MessageOnlyResponse)(nil),   // 7: customer.MessageOnlyResponse
+	(*UploadCSVRequest)(nil),      // 8: customer.UploadCSVRequest
+	(*UploadCSVResponse)(nil),     // 9: customer.UploadCSVResponse
 }
 var file_customer_service_proto_customer_proto_depIdxs = []int32{
 	0, // 0: customer.CustomerResponse.customer:type_name -> customer.Customer
@@ -549,14 +606,16 @@ var file_customer_service_proto_customer_proto_depIdxs = []int32{
 	3, // 2: customer.CustomerService.GetCustomer:input_type -> customer.GetCustomerRequest
 	4, // 3: customer.CustomerService.DeleteCustomer:input_type -> customer.DeleteCustomerRequest
 	1, // 4: customer.CustomerService.CreateCustomer:input_type -> customer.CreateCustomerRequest
-	7, // 5: customer.CustomerService.SendFile:input_type -> customer.UploadCSVRequest
-	5, // 6: customer.CustomerService.EditCustomer:output_type -> customer.CustomerResponse
-	5, // 7: customer.CustomerService.GetCustomer:output_type -> customer.CustomerResponse
-	6, // 8: customer.CustomerService.DeleteCustomer:output_type -> customer.MessageOnlyResponse
-	6, // 9: customer.CustomerService.CreateCustomer:output_type -> customer.MessageOnlyResponse
-	8, // 10: customer.CustomerService.SendFile:output_type -> customer.UploadCSVResponse
-	6, // [6:11] is the sub-list for method output_type
-	1, // [1:6] is the sub-list for method input_type
+	8, // 5: customer.CustomerService.SendFile:input_type -> customer.UploadCSVRequest
+	5, // 6: customer.CustomerService.ChangeCustomerEmail:input_type -> customer.UpdateCustomerRequest
+	6, // 7: customer.CustomerService.EditCustomer:output_type -> customer.CustomerResponse
+	6, // 8: customer.CustomerService.GetCustomer:output_type -> customer.CustomerResponse
+	7, // 9: customer.CustomerService.DeleteCustomer:output_type -> customer.MessageOnlyResponse
+	7, // 10: customer.CustomerService.CreateCustomer:output_type -> customer.MessageOnlyResponse
+	9, // 11: customer.CustomerService.SendFile:output_type -> customer.UploadCSVResponse
+	7, // 12: customer.CustomerService.ChangeCustomerEmail:output_type -> customer.MessageOnlyResponse
+	7, // [7:13] is the sub-list for method output_type
+	1, // [1:7] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
 	1, // [1:1] is the sub-list for extension extendee
 	0, // [0:1] is the sub-list for field type_name
@@ -573,7 +632,7 @@ func file_customer_service_proto_customer_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_customer_service_proto_customer_proto_rawDesc), len(file_customer_service_proto_customer_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
