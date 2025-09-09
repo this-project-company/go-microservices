@@ -16,7 +16,6 @@ func init() {
 }
 
 func main() {
-    initializers.LoadEnvvariables()
 
     r := gin.Default()
 
